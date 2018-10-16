@@ -1,0 +1,39 @@
+<div class="container-fluid bg-primary p-2">
+  <div class="row main">
+    <div class="col-sm-3 bg-light p-2 m-3 justify-content-between">
+      <div>
+        <span>
+          {{boardTitle}}
+        </span>
+        <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
+      </div>
+      <div *ngFor="let board of boards">
+        <div class="form-group">
+          <textarea class="form-control rounded-0" rows="1"></textarea>
+        </div>
+      </div>
+      <div class="add mt-2">
+        <p (click)="add()">+ Add another card</p>
+      </div>
+    </div>
+    <div class="col-sm-3 bg-light p-2 m-3">
+      <div>
+        <span>
+          {{boardTitle}}
+        </span>
+        <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
+      </div>
+    </div>
+    <div class="col-sm-3 bg-light p-2 m-3">
+      <div>
+        <span>
+          {{boardTitle}}
+        </span>
+        <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
+      </div>
+    </div>
+  </div>
+  <div class="sidenav">
+    <app-history></app-history>
+  </div>
+</div>

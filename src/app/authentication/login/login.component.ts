@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.loginForm.invalid) {
       this.flashMessage.show('Please enter all fields', { cssClass: 'alert-danger', timeout: 2000 })
-    } else if (this.authenticationService.login(this.form_fields.email.value, this.form_fields.password.value) {
+    } else if (this.authenticationService.login(this.form_fields.email.value, this.form_fields.password.value)) {
       this.flashMessage.show('Successfully logged in', { cssClass: 'alert-success', timeout: 2000 })
     } else {
       this.flashMessage.show('Authentication error', { cssClass: 'alert-danger', timeout: 2000 })

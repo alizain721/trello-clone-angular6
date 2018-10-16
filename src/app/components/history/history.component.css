@@ -1,0 +1,9 @@
+.sidenav a {
+    color: black;
+    display: block;
+}
+
+.sidenav a:hover {
+    background-color: grey;
+    text-decoration: underline;
+}

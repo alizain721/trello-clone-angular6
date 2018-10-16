@@ -1,0 +1,40 @@
+.menu {
+    position: relative;
+    float: right;
+    padding: 5px;
+}
+.menu:hover {
+    background-color: grey;
+    cursor: pointer;
+}
+.add {
+  cursor: pointer;
+}
+
+.add:hover {
+  background-color: lightgrey;
+  text-decoration: underline;
+}
+
+.sidenav {
+    height: 100%;
+    width: 160px;
+    position: fixed;
+    z-index: 1; 
+    top: 56px;
+    right: 0;
+    background-color: #eaedf0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    float: right;
+}
+
+.sidenav a {
+    color: black;
+    display: block;
+}
+
+.sidenav a:hover {
+    background-color: grey;
+    text-decoration: underline;
+}
