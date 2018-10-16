@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { DataService } from '../../core/services/data/data.service'
 
 @Component({
@@ -7,12 +8,18 @@ import { DataService } from '../../core/services/data/data.service'
   styleUrls: ['./boards.component.css']
 })
 export class BoardsComponent implements OnInit {
-	boardTitle:string = 'To Do';
-  boards:any = [];
-  message:string = '';
-  constructor(private dataservice: DataService) { }
+  username:string = ''
+  boardTitle:string = 'To Do'
+  boards:any = []
+  message:string = ''
+
+  constructor(private dataservice: DataService, private activatedRoute: ActivatedRoute) {
+  }
 
   ngOnInit() {
+    this.activatedRoute.paramMap.subscribe(params => {
+      console.log(params.get('id'));
+    });
   }
 
   add() {
