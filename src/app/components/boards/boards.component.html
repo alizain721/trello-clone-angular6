@@ -8,9 +8,9 @@
         <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
       </div>
       <div *ngFor="let board of boards;let i = index">
-        <div class="form-group">
+        <div class="form-group" (mouseover)="showIcon = board" (mouseleave)="showIcon = false" ng-init="showIcon = false">
           <i *ngIf="showIcon == board" class="fa fa-pencil edit"></i>
-          <textarea class="form-control rounded-0 board" (mouseover)="showIcon = board" (mouseleave)="showIcon = false" ng-init="showIcon = false" rows="1" readonly>{{board}}</textarea>
+          <textarea class="form-control rounded-0 board"  rows="1" readonly>{{board}}</textarea>
         </div>
       </div>
       <div *ngIf="displayTextArea">
