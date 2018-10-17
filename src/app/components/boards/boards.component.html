@@ -7,13 +7,23 @@
         </span>
         <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
       </div>
-      <div *ngFor="let board of boards">
+      <div *ngFor="let board of boards;let i = index">
         <div class="form-group">
-          <textarea class="form-control rounded-0" rows="1"></textarea>
+          <i *ngIf="showIcon == board" class="fa fa-pencil edit"></i>
+          <textarea class="form-control rounded-0 board" (mouseover)="showIcon = board" (mouseleave)="showIcon = false" ng-init="showIcon = false" rows="1" readonly>{{board}}</textarea>
         </div>
       </div>
-      <div class="add mt-2">
-        <p (click)="add()">+ Add another card</p>
+      <div *ngIf="displayTextArea">
+        <div>
+          <textarea #textbox autosize style="max-height: 100px !important" placeholder="Enter text" (change)="currentMsg = textbox.value">{{currentMsg}}</textarea>
+        </div>
+        <div class="m-1">
+          <button class="btn btn-success btn-xs" (click)="add()">Add Card</button>
+          <i class="fa fa-times text-muted ml-2 menu" aria-hidden="true" (click)="toggle()"></i>
+        </div>
+      </div>
+      <div *ngIf="!displayTextArea" class="add mt-2">
+        <p (click)="toggle()">+ Add another card</p>
       </div>
     </div>
     <div class="col-sm-3 bg-light p-2 m-3">

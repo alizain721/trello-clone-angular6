@@ -12,6 +12,8 @@ export class BoardsComponent implements OnInit {
   boardTitle:string = 'To Do'
   boards:any = []
   message:string = ''
+  displayTextArea:boolean = false;
+  currentMsg:string = '';
 
   constructor(private dataservice: DataService, private activatedRoute: ActivatedRoute) {
   }
@@ -23,8 +25,14 @@ export class BoardsComponent implements OnInit {
   }
 
   add() {
-    this.boards.push('');
-    this.dataservice.changeMessage('Update View');
+    this.boards.push(this.currentMsg);
+    this.dataservice.changeMessage(this.currentMsg);
+    this.displayTextArea = false;
+    this.currentMsg = '';
+  }
+
+  toggle() {
+    this.displayTextArea = !this.displayTextArea;
   }
 
 }
