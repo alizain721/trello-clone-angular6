@@ -8,9 +8,10 @@
         <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
       </div>
       <div *ngFor="let board of boards;let i = index">
-        <div class="form-group" (mouseover)="showIcon = board" (mouseleave)="showIcon = false" ng-init="showIcon = false">
-          <i *ngIf="showIcon == board" class="fa fa-pencil edit"></i>
-          <textarea class="form-control rounded-0 board"  rows="1" readonly>{{board}}</textarea>
+        <div class="form-group" (mouseover)="showIcon = i" (mouseleave)="showIcon = -1" ng-init="showIcon = -1">
+          <textarea  (keyup)="onKey($event)" class="form-control rounded-0" [ngClass]="{'board': readOnly[i]}"  rows="1" [readonly]= "readOnly[i]">{{board}}</textarea>
+          <i *ngIf="showIcon == i && readOnly[i]" class="fa fa-pencil edit" (click)="edit(i)"></i>
+          <button *ngIf="butons[i]" class="btn btn-success" (click)="save(i)">Save</button>
         </div>
       </div>
       <div *ngIf="displayTextArea">
