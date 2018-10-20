@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core'
 import { DataService } from '../../core/services/data/data.service'
 
 @Component({
@@ -7,11 +7,14 @@ import { DataService } from '../../core/services/data/data.service'
   styleUrls: ['./history.component.css']
 })
 export class HistoryComponent implements OnInit {
-	message:string = '';
+  message:string = ''
+  history:any = []
+  username = ''
   constructor(private dataservice: DataService) { }
 
   ngOnInit() {
-  	this.dataservice.currentMessage.subscribe(message => this.message = message );
+    this.dataservice.currentMessage.subscribe(message => this.history = message )
+    this.username = localStorage.getItem('username')
   }
 
 }

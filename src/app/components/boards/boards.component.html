@@ -1,18 +1,30 @@
 <div class="container-fluid bg-primary p-2">
   <div class="row main">
     <div class="col-sm-3 bg-light p-2 m-3 justify-content-between">
-      <div>
+      <div class="dropdown">
         <span>
           {{boardTitle}}
         </span>
-        <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
+        <i class="fa fa-ellipsis-h menu " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p class="dropdown-item" (click)="sortByAlphAsc()">Sort Alphabetically (Asc)</p>
+          <p class="dropdown-item" (click)="sortByAlphDesc()">Sort Alphabetically (Desc)</p>
+          <p class="dropdown-item" (click)="sortByDateAsc()">Sort By Date (Asc)</p>
+          <p class="dropdown-item" (click)="sortByDateDesc()">Sort By Date (Desc)</p>
+        </div>
       </div>
       <div *ngFor="let board of boards;let i = index">
         <div class="form-group" (mouseover)="showIcon = i" (mouseleave)="showIcon = -1" ng-init="showIcon = -1">
-          <textarea  (keyup)="onKey($event)" class="form-control rounded-0" [ngClass]="{'board': readOnly[i]}"  rows="1" [readonly]= "readOnly[i]">{{board}}</textarea>
+          <textarea  (keyup)="onKey($event)" class="form-control rounded-0" [ngClass]="{'board': readOnly[i]}"  rows="1" [readonly]= "readOnly[i]">{{board.msg}}</textarea>
           <i *ngIf="showIcon == i && readOnly[i]" class="fa fa-pencil edit" (click)="edit(i)"></i>
+          <i class="fa fa-user edit" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+            <p *ngFor="let user of users;let userid = index" class="dropdown-item" (click)="assignTask(userid,i)">{{user}}</p>
+          </div>
           <button *ngIf="butons[i]" class="btn btn-success" (click)="save(i)">Save</button>
+          <button *ngIf="butons[i]" class="btn btn-danger" (click)="delete(i)">Delete</button>
         </div>
+        <div *ngIf="board.task != -1"><i class="fa fa-user"></i>{{board.task}}</div>
       </div>
       <div *ngIf="displayTextArea">
         <div>

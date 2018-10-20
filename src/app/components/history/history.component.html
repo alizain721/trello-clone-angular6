@@ -1,9 +1,8 @@
 <div class="sidenav">
-  <a href="#">About</a>
-  <a href="#">Services</a>
-  <a href="#">Clients</a>
-  <a href="#">Contact</a>
-</div>
-<div>
-	{{message}}
+	<h1>History</h1>
+	<div *ngFor="let item of history">
+		<div class="p-2 m-2 bg-light">
+		 	{{username}} added {{item.msg}} in TO Do
+		</div>
+	</div>
 </div>
