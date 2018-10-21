@@ -7,6 +7,8 @@
         </span>
         <i class="fa fa-ellipsis-h menu " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p class="dropdown-item" (click)="moveAllTasks('Doing','boards')">Move all the tasks in Doing</p>
+          <p class="dropdown-item" (click)="moveAllTasks('Done','boards')">Move all the tasks in Done</p>
           <p class="dropdown-item" (click)="sortByAlphAsc()">Sort Alphabetically (Asc)</p>
           <p class="dropdown-item" (click)="sortByAlphDesc()">Sort Alphabetically (Desc)</p>
           <p class="dropdown-item" (click)="sortByDateAsc()">Sort By Date (Asc)</p>
@@ -26,33 +28,100 @@
         </div>
         <div *ngIf="board.task != -1"><i class="fa fa-user"></i>{{board.task}}</div>
       </div>
-      <div *ngIf="displayTextArea">
+      <div *ngIf="displayTextAreaBoard">
         <div>
           <textarea #textbox autosize style="max-height: 100px !important" placeholder="Enter text" (change)="currentMsg = textbox.value">{{currentMsg}}</textarea>
         </div>
         <div class="m-1">
-          <button class="btn btn-success btn-xs" (click)="add()">Add Card</button>
-          <i class="fa fa-times text-muted ml-2 menu" aria-hidden="true" (click)="toggle()"></i>
+          <button class="btn btn-success btn-xs" (click)="add('board')">Add Card</button>
+          <i class="fa fa-times text-muted ml-2 menu" aria-hidden="true" (click)="toggle('board')"></i>
         </div>
       </div>
-      <div *ngIf="!displayTextArea" class="add mt-2">
-        <p (click)="toggle()">+ Add another card</p>
+      <div *ngIf="!displayTextAreaBoard" class="add mt-2">
+        <p (click)="toggle('board')">+ Add another card</p>
       </div>
     </div>
     <div class="col-sm-3 bg-light p-2 m-3">
       <div>
         <span>
-          {{boardTitle}}
+          Doing
         </span>
-        <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
+        <i class="fa fa-ellipsis-h menu " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p class="dropdown-item" (click)="moveAllTasks('boards','Doing')">Move all the tasks in To DO</p>
+          <p class="dropdown-item" (click)="moveAllTasks('Done','Doing')">Move all the tasks in Done</p>
+          <p class="dropdown-item" (click)="sortByAlphAsc()">Sort Alphabetically (Asc)</p>
+          <p class="dropdown-item" (click)="sortByAlphDesc()">Sort Alphabetically (Desc)</p>
+          <p class="dropdown-item" (click)="sortByDateAsc()">Sort By Date (Asc)</p>
+          <p class="dropdown-item" (click)="sortByDateDesc()">Sort By Date (Desc)</p>
+        </div>
+      </div>
+      <div *ngFor="let board of Doing;let i = index">
+        <div class="form-group" (mouseover)="showIcon = i" (mouseleave)="showIcon = -1" ng-init="showIcon = -1">
+          <textarea  (keyup)="onKey($event)" class="form-control rounded-0" [ngClass]="{'board': readOnly[i]}"  rows="1" [readonly]= "readOnly[i]">{{board.msg}}</textarea>
+          <i *ngIf="showIcon == i && readOnly[i]" class="fa fa-pencil edit" (click)="edit(i)"></i>
+          <i class="fa fa-user edit" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+            <p *ngFor="let user of users;let userid = index" class="dropdown-item" (click)="assignTask(userid,i)">{{user}}</p>
+          </div>
+          <button *ngIf="butons[i]" class="btn btn-success" (click)="save(i)">Save</button>
+          <button *ngIf="butons[i]" class="btn btn-danger" (click)="delete(i)">Delete</button>
+        </div>
+        <div *ngIf="board.task != -1"><i class="fa fa-user"></i>{{board.task}}</div>
+      </div>
+      <div *ngIf="displayTextAreaDoing">
+        <div>
+          <textarea #textbox autosize style="max-height: 100px !important" placeholder="Enter text" (change)="currentMsg = textbox.value">{{currentMsg}}</textarea>
+        </div>
+        <div class="m-1">
+          <button class="btn btn-success btn-xs" (click)="add('Doing')">Add Card</button>
+          <i class="fa fa-times text-muted ml-2 menu" aria-hidden="true" (click)="toggle('Doing')"></i>
+        </div>
+      </div>
+      <div *ngIf="!displayTextAreaDoing" class="add mt-2">
+        <p (click)="toggle('Doing')">+ Add another card</p>
       </div>
     </div>
+
     <div class="col-sm-3 bg-light p-2 m-3">
       <div>
         <span>
-          {{boardTitle}}
+          Done
         </span>
-        <i class="fa fa-ellipsis-h menu" aria-hidden="true"></i>
+        <i class="fa fa-ellipsis-h menu " id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <p class="dropdown-item" (click)="moveAllTasks('boards','Done')">Move all the tasks in To DO</p>
+          <p class="dropdown-item" (click)="moveAllTasks('Doing','Done')">Move all the tasks in Doing</p>
+          <p class="dropdown-item" (click)="sortByAlphAsc()">Sort Alphabetically (Asc)</p>
+          <p class="dropdown-item" (click)="sortByAlphDesc()">Sort Alphabetically (Desc)</p>
+          <p class="dropdown-item" (click)="sortByDateAsc()">Sort By Date (Asc)</p>
+          <p class="dropdown-item" (click)="sortByDateDesc()">Sort By Date (Desc)</p>
+        </div>
+      </div>
+      <div *ngFor="let board of Done;let i = index">
+        <div class="form-group" (mouseover)="showIcon = i" (mouseleave)="showIcon = -1" ng-init="showIcon = -1">
+          <textarea  (keyup)="onKey($event)" class="form-control rounded-0" [ngClass]="{'board': readOnly[i]}"  rows="1" [readonly]= "readOnly[i]">{{board.msg}}</textarea>
+          <i *ngIf="showIcon == i && readOnly[i]" class="fa fa-pencil edit" (click)="edit(i)"></i>
+          <i class="fa fa-user edit" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false"></i>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenu">
+            <p *ngFor="let user of users;let userid = index" class="dropdown-item" (click)="assignTask(userid,i)">{{user}}</p>
+          </div>
+          <button *ngIf="butons[i]" class="btn btn-success" (click)="save(i)">Save</button>
+          <button *ngIf="butons[i]" class="btn btn-danger" (click)="delete(i)">Delete</button>
+        </div>
+        <div *ngIf="board.task != -1"><i class="fa fa-user"></i>{{board.task}}</div>
+      </div>
+      <div *ngIf="displayTextAreaDone">
+        <div>
+          <textarea #textbox autosize style="max-height: 100px !important" placeholder="Enter text" (change)="currentMsg = textbox.value">{{currentMsg}}</textarea>
+        </div>
+        <div class="m-1">
+          <button class="btn btn-success btn-xs" (click)="add('Done')">Add Card</button>
+          <i class="fa fa-times text-muted ml-2 menu" aria-hidden="true" (click)="toggle('Done')"></i>
+        </div>
+      </div>
+      <div *ngIf="!displayTextAreaDone" class="add mt-2">
+        <p (click)="toggle('Done')">+ Add another card</p>
       </div>
     </div>
   </div>

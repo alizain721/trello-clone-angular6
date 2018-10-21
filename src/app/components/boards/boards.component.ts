@@ -11,15 +11,22 @@ export class BoardsComponent implements OnInit {
   username:string = ''
   boardTitle:string = 'To Do'
   boards:any = []
+  Doing:any = []
+  Done:any = []
   readOnly:any = []
   butons:any = []
   message:string = ''
-  displayTextArea:boolean = false
+  displayTextAreaBoard:boolean = false
+  displayTextAreaDoing:boolean = false
+  displayTextAreaDone:boolean = false
   currentMsg:string = ''
   editedText:string = ''
   users:any = ['user1' , 'user2']
 
-  constructor(private dataservice: DataService, private activatedRoute: ActivatedRoute) {
+  constructor(private router:Router, private dataservice: DataService, private activatedRoute: ActivatedRoute) {
+    if(!localStorage.getItem('username')) {
+      this.router.navigate(['/login'])
+    }
   }
 
   ngOnInit() {
@@ -28,18 +35,43 @@ export class BoardsComponent implements OnInit {
     })
   }
 
-  add() {
-    this.boards.push({'date': Date.now() , 'msg': this.currentMsg, 'task': -1})
+  add(list:any) {
+    if(list == 'Doing') {
+      this.Doing.push({'date': Date.now() , 'msg': this.currentMsg, 'task': -1})
+      this.displayTextAreaDoing = false
+    }
+    else if (list == 'Done') {
+      this.Done.push({'date': Date.now() , 'msg': this.currentMsg, 'task': -1})
+      this.displayTextAreaDone = false
+
+    }
+    else if(list == 'board') {
+      this.boards.push({'date': Date.now() , 'msg': this.currentMsg, 'task': -1})
+      this.displayTextAreaBoard = false
+    }
     this.readOnly.push(true)
     this.butons.push(false)
-    this.dataservice.changeMessage(this.boards)
-    this.displayTextArea = false
+    let history = []
+    history = history.concat(this.boards)
+    history = history.concat(this.Doing)
+    history = history.concat(this.Done)
+    this.dataservice.changeMessage(history)
     this.currentMsg = ''
   }
 
 
-  toggle() {
-    this.displayTextArea = !this.displayTextArea
+  toggle(list: string) {
+    if(list == 'Doing') {
+      this.displayTextAreaDoing = !this.displayTextAreaDoing
+    }
+    else if (list == 'Done') {
+      this.displayTextAreaDone = !this.displayTextAreaDone
+      
+    }
+    else if(list == 'board') {
+      this.displayTextAreaBoard = !this.displayTextAreaBoard
+    }
+
     this.currentMsg = ''
   }
 
@@ -50,8 +82,8 @@ export class BoardsComponent implements OnInit {
 
   sortByAlphAsc() {
     this.boards.sort(function(a, b){
-      var x = a.msg.toLowerCase()
-      var y = b.msg.toLowerCase()
+      let x = a.msg.toLowerCase()
+      let y = b.msg.toLowerCase()
       if (x < y) {return -1}
       if (x > y) {return 1}
       return 0
@@ -60,8 +92,8 @@ export class BoardsComponent implements OnInit {
 
   sortByAlphDesc() {
     this.boards.sort(function(a, b){
-      var x = a.msg.toLowerCase()
-      var y = b.msg.toLowerCase()
+      let x = a.msg.toLowerCase()
+      let y = b.msg.toLowerCase()
       if (x > y) {return -1}
       if (x < y) {return 1}
       return 0
@@ -79,7 +111,7 @@ export class BoardsComponent implements OnInit {
   save(index) {
     this.boards[index].msg = this.editedText
     this.editedText = ''
-    this.displayTextArea = false
+    this.displayTextAreaBoard = false
     this.readOnly[index] = true
     this.butons[index] = false
     this.dataservice.changeMessage(this.boards)
@@ -88,7 +120,7 @@ export class BoardsComponent implements OnInit {
   }
 
   delete (index) {
-    this.displayTextArea = false
+    this.displayTextAreaBoard = false
     this.readOnly[index] = true
     this.butons[index] = false
     this.boards.splice(index,1)
@@ -101,5 +133,35 @@ export class BoardsComponent implements OnInit {
 
   assignTask(user , task) {
     this.boards[task]["task"] = this.users[user]
+  }
+
+  moveAllTasks(list1, list2 ) {
+    if(list2 == 'boards') {
+      if(list1 == 'Doing') {
+        this.Doing = this.Doing.concat(this.boards)
+      }
+      else if (list1 == 'Done') {
+        this.Done = this.Done.concat(this.boards)
+      }
+      this.boards = []
+    }
+    else if(list2 == 'Doing') {
+      if(list1 == 'boards') {
+        this.boards = this.boards.concat(this.Doing)
+      }
+      else if (list1 == 'Done') {
+        this.Done = this.Done.concat(this.Doing)
+      }
+      this.Doing = []
+    }
+    else if(list2 == 'Done') {
+      if(list1 == 'Doing') {
+        this.Doing = this.Doing.concat(this.Done)
+      }
+      else if (list1 == 'boards') {
+        this.boards = this.boards.concat(this.Done)
+      }
+      this.Done = []
+    }
   }
 }
